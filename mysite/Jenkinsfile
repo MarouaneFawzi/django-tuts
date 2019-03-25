@@ -1,0 +1,30 @@
+pipeline {
+    agent { docker { image 'python:3.5.1' } }
+    stages {
+        stage('checkout') {
+            steps {
+                checkout scm
+            }
+        stage('create/activate venv') {
+            steps {
+                cd mysite
+                virtualenv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+            }
+        }
+
+        stage('setup db') {
+            steps {
+                python manage.py makemigrations
+                python manage.py migrate
+                python manage.py seed polls --number=30
+
+        }
+
+        stage('Test') {
+            steps {
+                python manage.py test polls
+        }
+    }
+}
