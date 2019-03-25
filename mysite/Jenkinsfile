@@ -20,6 +20,7 @@ pipeline {
         stage('setup db') {
             steps {
                 sh '''
+                ls
                 python manage.py makemigrations
                 python manage.py migrate
                 '''
