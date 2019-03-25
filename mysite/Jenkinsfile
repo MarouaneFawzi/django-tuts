@@ -9,9 +9,10 @@ pipeline {
         stage('create/activate venv') {
             steps {
                 sh '''
+                #!/bin/bash
                 cd mysite
                 virtualenv venv
-                . venv/bin/activate
+                source venv/bin/activate
                 pip3 install -r requirements.txt
                 '''
             }
