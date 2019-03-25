@@ -8,29 +8,33 @@ pipeline {
         }
         stage('create/activate venv') {
             steps {
+                sh '''
                 cd mysite
                 virtualenv venv
                 source venv/bin/activate
-                sh 'pip install -r requirements.txt'
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('setup db') {
             steps {
+                sh '''
                 python manage.py makemigrations
                 python manage.py migrate
+                '''
             }
         }
         stage('populate db') {
             steps {
-                 python manage.py seed polls
+                 sh 'python manage.py seed polls'
             }
 
         }
 
         stage('Test') {
             steps {
-                python manage.py test polls
+                sh'python manage.py test polls'
         }
     }
 }
