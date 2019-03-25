@@ -17,16 +17,10 @@ pipeline {
                 cd mysite
                 python manage.py makemigrations
                 python manage.py migrate
+                python manage.py seed polls
                 '''
                 
             }
-        }
-
-        stage('populate db') {
-            steps {
-                 sh 'python manage.py seed polls'
-            }
-
         }
 
         stage('Test') {
