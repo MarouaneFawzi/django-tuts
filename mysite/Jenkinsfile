@@ -19,6 +19,7 @@ pipeline {
                 python manage.py makemigrations
                 python manage.py migrate
                 python manage.py seed polls --number=30
+            }
 
         }
 
