@@ -34,7 +34,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh'python manage.py test polls'
+                sh 'python manage.py test polls'
         }
     }
 }
