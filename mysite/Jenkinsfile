@@ -12,7 +12,7 @@ pipeline {
                 #!/bin/bash
                 cd mysite
                 virtualenv venv
-                source venv/bin/activate
+                . venv/bin/activate
                 pip3 install -r requirements.txt
                 '''
             }
