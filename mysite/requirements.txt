@@ -1,7 +1,7 @@
 Django==2.0.5
 django-seed==0.1.9
 Faker==1.0.4
-pkg-resources==0.0.0
+
 python-dateutil==2.8.0
 pytz==2018.9
 six==1.12.0
