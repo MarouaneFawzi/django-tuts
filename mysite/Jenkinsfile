@@ -18,7 +18,11 @@ pipeline {
             steps {
                 python manage.py makemigrations
                 python manage.py migrate
-                python manage.py seed polls
+            }
+        }
+        stage('populate db') {
+            steps {
+                 python manage.py seed polls
             }
 
         }
