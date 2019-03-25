@@ -14,19 +14,14 @@ pipeline {
                 virtualenv venv
                 . venv/bin/activate
                 pip3 install -r requirements.txt
-                '''
-            }
-        }
-
-        stage('setup db') {
-            steps {
-                sh '''
                 cd mysite
                 python manage.py makemigrations
                 python manage.py migrate
                 '''
+                
             }
         }
+
         stage('populate db') {
             steps {
                  sh 'python manage.py seed polls'
