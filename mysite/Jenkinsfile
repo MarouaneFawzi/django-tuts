@@ -1,25 +1,55 @@
 pipeline {
     agent any
-    stages {
-        stage('checkout') {
+    stages {        
+        stage('Get code') {
             steps {
                 checkout scm
             }
         }
-        stage('create/activate venv') {
+        stage('create/activate venv and dependencies ') {
             steps {
                 sh '''
-                #!/bin/bash
                 cd mysite
                 virtualenv venv
                 . venv/bin/activate
                 pip3 install -r requirements.txt
+               
+                ''' 
+            }
+        }
+        stage('migrate and populate database') {
+            steps {
+                sh '''
+                cd mysite
+                . venv/bin/activate
                 python manage.py makemigrations
                 python manage.py migrate
                 python manage.py seed polls
+                ''' 
+            }
+        }
+        
+        stage('Tests') {
+            steps {
+                sh '''
+                cd mysite
+                . venv/bin/activate
                 python manage.py test polls
                 ''' 
             }
         }
+    }
+    
+    post {
+        failure {
+            mail to: 'glamarouane@gmail.com',
+                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                 body: "Something is wrong with ${env.BUILD_URL}"
+    }
+        success {
+            mail to: 'glamarouane@gmail.com',
+                 subject: "Succesful Pipeline: ${currentBuild.fullDisplayName}",
+                 body: "Yay ${env.BUILD_URL}"
+               }
 }
 }
