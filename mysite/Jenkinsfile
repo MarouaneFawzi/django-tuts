@@ -42,12 +42,12 @@ pipeline {
     
     post {
         failure {
-            mail to: 'mfawzi@rawa-services.com',
+            mail to: 'glamarouane@gmail.com',
                  subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
                  body: "Something is wrong with ${env.BUILD_URL}"
     }
         success {
-            mail to: 'mfawzi@rawa-services.com',
+            mail to: 'glamarouane@gmail.com',
                  subject: "Succesful Pipeline: ${currentBuild.fullDisplayName}",
                  body: "Yay ${env.BUILD_URL}"
                }
