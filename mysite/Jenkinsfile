@@ -1,22 +1,37 @@
 pipeline {
     agent any
     stages {
-        stage('checkout') {
+        stage('Get code') {
             steps {
                 checkout scm
             }
         }
-        stage('create/activate venv') {
+        stage('create/activate venv and dependencies ') {
             steps {
                 sh '''
-                #!/bin/bash
                 cd mysite
                 virtualenv venv
                 . venv/bin/activate
                 pip3 install -r requirements.txt
+               
+                ''' 
+            }
+        }
+        stage('migrate and populate database') {
+            steps {
+                sh '''
+                . venv/bin/activate
                 python manage.py makemigrations
                 python manage.py migrate
                 python manage.py seed polls
+                ''' 
+            }
+        }
+        
+        stage('Tests') {
+            steps {
+                sh '''
+                . venv/bin/activate
                 python manage.py test polls
                 ''' 
             }
